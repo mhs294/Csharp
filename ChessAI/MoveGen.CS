@@ -703,65 +703,69 @@ class MoveGen
     }
     else if (attackPlayer == ChessBoard.BLACK) // check if targets are attacked by black
     {
-      // get target square
-      uint toSq = GetNextSquare(targetBitBoard);
-
-      // check for pawn attacks
-      if ((toSq / 8) < 6 && ((ChessBoard.PAWN_CAPTURES[toSq]) & AI.board.black_pawn) != 0) return true;
-
-      // check for king attakcs
-      if ((ChessBoard.KING_MOVES[toSq] & AI.board.black_king) != 0) return true;
-
-      // check for knight attacks
-      if ((ChessBoard.KNIGHT_MOVES[toSq] & AI.board.black_knight) != 0) return true;
-
-      // check for bishop attacks
-      UInt64 bishops = AI.board.black_bishop;
-      while (bishops != 0)
+      // loop until all targets have been checked
+      while (targetBitBoard != 0)
       {
-        // get origin square
-        uint fromSq = GetNextSquare(bishops);
-
-        // check for bishop attack from origin square to target square
-        UInt64 bishopTargets = AI.board.empty_squares | AI.board.white_pieces;
-        if ((GetBishopMoves(fromSq, bishopTargets, AI.board.occupied_squares) & targetBitBoard) != 0) return true;
-
-        // remove fromSq from bishops BitBoard
-        bishops ^= ChessBoard.SQUARES[fromSq];
+        // get target square
+        uint toSq = GetNextSquare(targetBitBoard);
+  
+        // check for pawn attacks
+        if ((toSq / 8) < 6 && ((ChessBoard.PAWN_CAPTURES[toSq]) & AI.board.black_pawn) != 0) return true;
+  
+        // check for king attakcs
+        if ((ChessBoard.KING_MOVES[toSq] & AI.board.black_king) != 0) return true;
+  
+        // check for knight attacks
+        if ((ChessBoard.KNIGHT_MOVES[toSq] & AI.board.black_knight) != 0) return true;
+  
+        // check for bishop attacks
+        UInt64 bishops = AI.board.black_bishop;
+        while (bishops != 0)
+        {
+          // get origin square
+          uint fromSq = GetNextSquare(bishops);
+  
+          // check for bishop attack from origin square to target square
+          UInt64 bishopTargets = AI.board.empty_squares | AI.board.white_pieces;
+          if ((GetBishopMoves(fromSq, bishopTargets, AI.board.occupied_squares) & targetBitBoard) != 0) return true;
+  
+          // remove fromSq from bishops BitBoard
+          bishops ^= ChessBoard.SQUARES[fromSq];
+        }
+  
+        // check for rook attacks
+        UInt64 rooks = AI.board.black_rook;
+        while (rooks != 0)
+        {
+          // get origin square
+          uint fromSq = GetNextSquare(rooks);
+  
+          // check for rook attack from origin square to target square
+          UInt64 rookTargets = AI.board.empty_squares | AI.board.white_pieces;
+          if ((GetRookMoves(fromSq, rookTargets, AI.board.occupied_squares) & targetBitBoard) != 0) return true;
+  
+          // remove fromSq from rooks BitBoard
+          rooks ^= ChessBoard.SQUARES[fromSq];
+        }
+  
+        // check for queen attacks
+        UInt64 queens = AI.board.black_queen;
+        while (queens != 0)
+        {
+          // get origin square
+          uint fromSq = GetNextSquare(queens);
+  
+          // check for queen attack from origin square to target square
+          UInt64 queenTargets = AI.board.empty_squares | AI.board.white_pieces;
+          if ((GetQueenMoves(fromSq, queenTargets, AI.board.occupied_squares) & targetBitBoard) != 0) return true;
+  
+          // remove fromSq from queens BitBoard
+          queens ^= ChessBoard.SQUARES[fromSq];
+        }
+  
+        // remove toSq from target BitBoard
+        targetBitBoard ^= ChessBoard.SQUARES[toSq];
       }
-
-      // check for rook attacks
-      UInt64 rooks = AI.board.black_rook;
-      while (rooks != 0)
-      {
-        // get origin square
-        uint fromSq = GetNextSquare(rooks);
-
-        // check for rook attack from origin square to target square
-        UInt64 rookTargets = AI.board.empty_squares | AI.board.white_pieces;
-        if ((GetRookMoves(fromSq, rookTargets, AI.board.occupied_squares) & targetBitBoard) != 0) return true;
-
-        // remove fromSq from rooks BitBoard
-        rooks ^= ChessBoard.SQUARES[fromSq];
-      }
-
-      // check for queen attacks
-      UInt64 queens = AI.board.black_queen;
-      while (queens != 0)
-      {
-        // get origin square
-        uint fromSq = GetNextSquare(queens);
-
-        // check for queen attack from origin square to target square
-        UInt64 queenTargets = AI.board.empty_squares | AI.board.white_pieces;
-        if ((GetQueenMoves(fromSq, queenTargets, AI.board.occupied_squares) & targetBitBoard) != 0) return true;
-
-        // remove fromSq from queens BitBoard
-        queens ^= ChessBoard.SQUARES[fromSq];
-      }
-
-      // remove toSq from target BitBoard
-      targetBitBoard ^= ChessBoard.SQUARES[toSq];
     }
 
     // targets are not under attack
