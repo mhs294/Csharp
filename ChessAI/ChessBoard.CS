@@ -327,7 +327,7 @@ class ChessBoard
   public const uint B_BISHOP = 0x0D;
   public const uint B_QUEEN = 0x0E;
 
-  // BitBoards storing static readonlyant information (for masking purposes)
+  // BitBoards storing static readonly information (for masking purposes)
   public static readonly UInt64 FULL_BOARD = 0xFFFFFFFFFFFFFFFF;
   public static readonly UInt64 EMPTY_BOARD = 0x0000000000000000;
   public static readonly UInt64 FG_MASK = 0x0000000000000060;
