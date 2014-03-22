@@ -754,7 +754,7 @@ class ChessMove
 
   public uint move; // stores the move data in a bitmask	
 
-  // move static readonlyants
+  // move static constants
   public const uint NULL_MOVE = 0x00000000;
 
   // piece type constants
