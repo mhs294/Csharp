@@ -374,7 +374,7 @@ class ChessMove
       AI.board.theBoard[toSq] = capture;
   }
 
-  // modifies the ChessBoard to reflect a pawn promotion (undo if unmake = true)
+  // modifies the ChessBoard to reflect a pawn promotion
   public void DoPromotion(uint promote, uint toSq)
   {
     // initialize variables
