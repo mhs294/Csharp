@@ -293,7 +293,7 @@ class ChessMove
       AI.states.Add(new GameState(AI.states[AI.states.Count - 1], this));
   }
 
-  // modifies the ChessBoard to reflect a piece capture
+  // modifies the ChessBoard to reflect a piece capture (undo capture if unmake = true)
   public void DoCapture(uint capture, uint toSq, bool unmake)
   {
     // initialize variables
